@@ -1,8 +1,8 @@
-// import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import data from 'data.json';
-// import { increment, onValue, ref, update } from 'firebase/database';
-// import { realtimeDb } from 'firebase.ts';
+import { onValue, ref } from 'firebase/database';
+import { realtimeDb } from 'firebase.ts';
 import JSConfetti from 'js-confetti';
 import Heart from '@/assets/icons/heart_plus.svg?react';
 import Share from '@/assets/icons/share.svg?react';
@@ -11,40 +11,43 @@ import Button from '@/components/Button.tsx';
 
 const FloatingBar = ({ isVisible }: { isVisible: boolean }) => {
   const { emojis } = data;
+  const [count, setCount] = useState(0);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const jsConfettiRef = useRef(new JSConfetti());
 
-  // TODO: count 기능 사용 원할시 firebase realtime db 연결!
-  // const [count, setCount] = useState(0);
+  useEffect(() => {
+    const dbRef = ref(realtimeDb, 'likes');
+    const unsubscribe = onValue(dbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setCount(Number(snapshot.val()));
+        setDataLoaded(true);
+      }
+    });
 
-  // useEffect(() => {
-  // TODO: realtime db 에 likes 객체 추가.
-  //   const dbRef = ref(realtimeDb, 'likes');
-  //   onValue(dbRef, (snapshot) => {
-  //     setCount(Number(snapshot.val()));
-  //   });
-  // }, []);
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (dataLoaded) {
+      setIsVisible(true);
+    }
+  }, [dataLoaded]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(
-      () => {
-        alert('주소가 복사되었습니다.😉😉');
-      },
-      () => {
-        alert('주소 복사에 실패했습니다.🥲🥲');
-      },
+      () => alert('주소가 복사되었습니다.😉😉'),
+      () => alert('주소 복사에 실패했습니다.🥲🥲'),
     );
   };
 
   const handleCount = () => {
-    void jsConfetti.addConfetti({ emojis });
+    void jsConfettiRef.current.addConfetti({ emojis });
 
-    // 버튼 클릭시 likes 수 증가
+    // Firebase likes 증가 코드 (주석 해제 시 적용 가능)
     // const dbRef = ref(realtimeDb);
-    // void update(dbRef, {
-    //   likes: increment(1),
-    // });
+    // void update(dbRef, { likes: increment(1) });
   };
 
-  const jsConfetti = new JSConfetti();
   const handleScroll = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -53,7 +56,7 @@ const FloatingBar = ({ isVisible }: { isVisible: boolean }) => {
     <Nav isVisible={isVisible}>
       <Button onClick={handleCount}>
         <Heart fill="#e88ca6" />
-        {/*{count || ''}*/}
+        {count || ''}
       </Button>
       <Button onClick={handleCopy}>
         <Share fill="#e88ca6" />
@@ -78,5 +81,7 @@ const Nav = styled.nav<{ isVisible: boolean }>`
   align-items: center;
   justify-content: center;
   gap: 5px;
-  display: ${(props) => (props.isVisible ? 'flex' : 'none')};
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  pointer-events: ${(props) => (props.isVisible ? 'auto' : 'none')};
+  transition: opacity 0.3s ease-in-out;
 `;
