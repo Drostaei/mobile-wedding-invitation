@@ -38,10 +38,10 @@ const FloatingBar = ({ isVisible }: { isVisible: boolean }) => {
     void jsConfetti.addConfetti({ emojis });
 
     // 버튼 클릭시 likes 수 증가
-   const dbRef = ref(realtimeDb);
-   void update(dbRef, {
-       likes: increment(1),
-    });
+    // const dbRef = ref(realtimeDb);
+    // void update(dbRef, {
+    //   likes: increment(1),
+    // });
   };
 
   const jsConfetti = new JSConfetti();
