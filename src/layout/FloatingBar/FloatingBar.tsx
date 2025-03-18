@@ -17,14 +17,11 @@ const FloatingBar = ({ isVisible }: { isVisible: boolean }) => {
 
   // useEffect(() => {
   // TODO: realtime db 에 likes 객체 추가.
-
-const dbRef = ref(realtimeDb, 'likes');
-    onValue(dbRef, (snapshot) => {
-      setCount(Number(snapshot.val()));
-    });
-  }, []);
-
-
+  //   const dbRef = ref(realtimeDb, 'likes');
+  //   onValue(dbRef, (snapshot) => {
+  //     setCount(Number(snapshot.val()));
+  //   });
+  // }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(
@@ -41,12 +38,11 @@ const dbRef = ref(realtimeDb, 'likes');
     void jsConfetti.addConfetti({ emojis });
 
     // 버튼 클릭시 likes 수 증가
-
-    const dbRef = ref(realtimeDb);
-    void update(dbRef, {
-      likes: increment(1),
-    });
-
+    // const dbRef = ref(realtimeDb);
+    // void update(dbRef, {
+    //   likes: increment(1),
+    // });
+  };
 
   const jsConfetti = new JSConfetti();
   const handleScroll = () => {
