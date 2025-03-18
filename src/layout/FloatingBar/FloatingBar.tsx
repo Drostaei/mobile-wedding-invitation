@@ -13,15 +13,15 @@ const FloatingBar = ({ isVisible }: { isVisible: boolean }) => {
   const { emojis } = data;
 
   // TODO: count 기능 사용 원할시 firebase realtime db 연결!
-  // const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
-  // useEffect(() => {
+  useEffect(() => {
   // TODO: realtime db 에 likes 객체 추가.
-  //   const dbRef = ref(realtimeDb, 'likes');
-  //   onValue(dbRef, (snapshot) => {
-  //     setCount(Number(snapshot.val()));
-  //   });
-  // }, []);
+  const dbRef = ref(realtimeDb, 'likes');
+  onValue(dbRef, (snapshot) => {
+       setCount(Number(snapshot.val()));
+     });
+   }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(
