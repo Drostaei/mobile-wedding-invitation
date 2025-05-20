@@ -51,10 +51,10 @@ likes: increment(1),
 
   return (
     <Nav isVisible={isVisible}>
-      <Button onClick={handleCount}>
-        <Heart fill="#e88ca6" />
-        {count || '' }
-      </Button>
+<Button onClick={handleCount}>
+  <Heart fill="#e88ca6" />
+  <span style={{ marginLeft: '4px', color: 'black' }}>{count || ''}</span>
+</Button>
       <Button onClick={handleCopy}>
         <Share fill="#e88ca6" />
         공유
