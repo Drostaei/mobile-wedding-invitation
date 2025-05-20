@@ -53,7 +53,7 @@ likes: increment(1),
     <Nav isVisible={isVisible}>
       <Button onClick={handleCount}>
         <Heart fill="#e88ca6" />
-        {count || ''}
+        {/count || '' /}
       </Button>
       <Button onClick={handleCopy}>
         <Share fill="#e88ca6" />
