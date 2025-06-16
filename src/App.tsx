@@ -37,7 +37,7 @@ function App() {
   };
 
   return (
-    <NavermapsProvider ncpClientId={ncpClientId}>
+    <NavermapsProvider ncpKeyId={ncpClientId}>
       <Container>
         <Wrapper>
           <Main />
